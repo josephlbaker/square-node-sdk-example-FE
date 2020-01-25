@@ -1,29 +1,46 @@
 import React, { Component } from 'react';
 
 class Home extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      itemNames: [],
+      itemImages: []
+    }
+    // this.fetchItems();
+    // this.fetchItems = this.fetchItems.bind(this);
+  }
 
-  state = {
-    apiResponse: ''
+  componentWillMount() {
+    this.fetchItems();
   }
 
   fetchItems = () => {
     fetch("http://localhost:8000/", {
       method: 'GET'
     })
-      // .then(results => console.log(results))
-      // .then(res => res.text())
       .then(res => res.json())
-      .then(res => console.log(res))
-      .then(res => this.setState({ apiResponse: res }))
+      .then(res => {
+        for (let i = 0; i < res.objects.length; i++) {
+          if (res.objects[i].type === 'ITEM') {
+            let joined = this.state.itemNames.concat(res.objects[i].item_data.name);
+            this.setState({
+              itemNames: joined
+            })
+          }
+          if (res.objects[i].type === 'IMAGE') {
+            let joined = this.state.itemImages.concat(res.objects[i].image_data.url);
+            this.setState({
+              itemImages: joined
+            })
+          }
+        }
+      })
   };
-
-  componentDidMount() {
-    this.fetchItems();
-  }
 
   render() {
     return (
-      <p>{this.state.apiResponse}</p>
+      <p>{this.state.itemNames}</p>
     );
   }
 }
