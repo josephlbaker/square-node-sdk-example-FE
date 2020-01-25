@@ -7,8 +7,6 @@ class Home extends Component {
       itemNames: [],
       itemImages: []
     }
-    // this.fetchItems();
-    // this.fetchItems = this.fetchItems.bind(this);
   }
 
   componentWillMount() {
@@ -39,8 +37,15 @@ class Home extends Component {
   };
 
   render() {
+    let itemNames = this.state.itemNames.map(function (i) {
+      return <li key={i}>{i}</li>
+    })
     return (
-      <p>{this.state.itemNames}</p>
+      <div>
+        {/* <p>{this.state.itemNames}</p> */}
+        <p>Items</p>
+        {itemNames}
+      </div>
     );
   }
 }
